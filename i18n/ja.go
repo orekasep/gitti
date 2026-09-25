@@ -533,6 +533,7 @@ var jA = LanguageMapping{
 	KeyBindingForChooseRemoteBranchOptionPopUp: []string{
 		"[↑/↓] 上下に移動",
 		"[enter] リモートブランチオプションを選択",
+		"[F] 絞り込み",
 		"[esc] キャンセル / 閉じる",
 	},
 	KeyBindingForChooseBranchOptionForMergePopUp: []string{

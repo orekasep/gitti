@@ -533,6 +533,7 @@ var zH_HANS = LanguageMapping{
 	KeyBindingForChooseRemoteBranchOptionPopUp: []string{
 		"[↑/↓] 上下移动",
 		"[enter] 选择远程分支选项",
+		"[F] 过滤",
 		"[esc] 取消 / 关闭",
 	},
 	KeyBindingForChooseBranchOptionForMergePopUp: []string{

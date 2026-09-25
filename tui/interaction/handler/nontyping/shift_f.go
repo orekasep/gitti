@@ -10,13 +10,24 @@ import (
 //
 //	Handle 'F' key interaction.
 //	Responsibility: Enters panel list filter typing mode for the currently focused
-//	list panel (branch/tag/remote/worktree, modified files, commit log/reflog, stash).
+//	list panel (branch/tag/remote/worktree, modified files, commit log/reflog, stash)
+//	or the remote branch selection popup.
 //	While active, key presses edit the panel's filter query instead of triggering
 //	their normal actions (enter keeps the query, esc clears it).
 //
 // ------------------------------------
 func handleNonTypingFKeyBindingInteraction(m *types.GittiModel) (*types.GittiModel, tea.Cmd) {
-	if !m.ShowPopUp.Load() && !m.IsLineEditingState.Load() {
+	if m.ShowPopUp.Load() {
+		switch m.PopUpType {
+		case constant.ChooseRemoteBranchOptionPopUp:
+			if m.PanelFilterQuery == nil {
+				m.PanelFilterQuery = make(map[string]string)
+			}
+			m.IsPanelFiltering.Store(true)
+		}
+		return m, nil
+	}
+	if !m.IsLineEditingState.Load() {
 		switch m.CurrentSelectedComponent {
 		case constant.LocalBranchOrTagOrRemoteOrWorktreeComponentPanel,
 			constant.ModifiedFilesComponentPanel,

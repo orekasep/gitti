@@ -124,7 +124,6 @@ func handleNonTypingEscKeyBindingInteraction(m *types.GittiModel) (*types.GittiM
 			constant.GitRevertParentOptionSelectionPopUp,
 			constant.GitRevertConfirmationPopUp,
 			constant.GitCherryPickFromRefLogApplyConfirmationPopUp,
-			constant.ChooseRemoteBranchOptionPopUp,
 			constant.ChooseBranchOptionForMergePopUp,
 			constant.InteractiveRebaseOptionPopUp,
 			constant.InteractiveRebaseFixupSquashSelectionPopUp,
@@ -132,6 +131,21 @@ func handleNonTypingEscKeyBindingInteraction(m *types.GittiModel) (*types.GittiM
 			constant.InteractiveRebaseDropSelectionPopUp,
 			constant.WorktreeRemoveWorktreeConfirmationPopUp:
 			// simple closing of the pop up
+			m.ShowPopUp.Store(false)
+			m.IsTyping.Store(false)
+			m.PopUpType = constant.NoPopUp
+			m.PopUpModel = nil
+
+		case constant.ChooseRemoteBranchOptionPopUp:
+			if m.PanelFilterQuery != nil && m.PanelFilterQuery[constant.ChooseRemoteBranchOptionPopUp] != "" {
+				delete(m.PanelFilterQuery, constant.ChooseRemoteBranchOptionPopUp)
+				branchPopUp.InitChooseRemoteBranchOptionPopUpModel(m)
+				return m, nil
+			}
+			if m.PanelFilterQuery != nil {
+				delete(m.PanelFilterQuery, constant.ChooseRemoteBranchOptionPopUp)
+			}
+			m.IsPanelFiltering.Store(false)
 			m.ShowPopUp.Store(false)
 			m.IsTyping.Store(false)
 			m.PopUpType = constant.NoPopUp

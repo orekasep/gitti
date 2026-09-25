@@ -532,6 +532,7 @@ var eN = LanguageMapping{
 	KeyBindingForChooseRemoteBranchOptionPopUp: []string{
 		"[↑/↓] move up and down",
 		"[enter] select remote branch option",
+		"[F] filter",
 		"[esc] cancel / close",
 	},
 	KeyBindingForChooseBranchOptionForMergePopUp: []string{
