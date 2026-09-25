@@ -49,6 +49,18 @@ func handleNonTypingeKeyBindingInteraction(m *types.GittiModel) (*types.GittiMod
 				currentSelectedFile := currentSelectedFileItem.(files.GitModifiedFilesItem)
 				return launchEditor(m, currentSelectedFile.FilePathname)
 			}
+		case constant.DetailComponentPanel, constant.DetailComponentPanelTwo:
+			if m.DetailPanelParentComponent == constant.ModifiedFilesComponentPanel {
+				currentSelectedFileItem := m.CurrentRepoModifiedFilesInfoList.SelectedItem()
+				if currentSelectedFileItem != nil {
+					currentSelectedFile := currentSelectedFileItem.(files.GitModifiedFilesItem)
+					lineNum := 0
+					if m.IsLineEditingState.Load() {
+						lineNum = m.LineEditingIndexPositionAndInfo.DetailPanelViewportActualCurrentIndex + 1
+					}
+					return launchEditorWithLine(m, currentSelectedFile.FilePathname, lineNum)
+				}
+			}
 		case constant.LogComponentPanel:
 			go func() {
 				m.GittiLogger.ExportLogging()

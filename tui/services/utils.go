@@ -421,16 +421,17 @@ func generateStashDetailPanelContent(ctx context.Context, m *types.GittiModel) s
 
 	var vpLine strings.Builder
 
-	stashDetail := m.GitOperations.GitStash.GitStashDetail(ctx, stashItem.Id)
-	if len(stashDetail) < 1 {
-		return ""
-	}
-
 	vpLine.WriteString(fmt.Sprintf(
 		"[%s]\n[%s]\n\n",
 		style.StashIdStyle.Render(stashItem.Id),
 		style.StashMessageStyle.Render(stashItem.Message),
 	))
+
+	stashDetail := m.GitOperations.GitStash.GitStashDetail(ctx, stashItem.Id)
+	if len(stashDetail) < 1 {
+		vpLine.WriteString(style.NewStyle.Render(i18n.LANGUAGEMAPPING.FileTypeUnSupportedPreview))
+		return vpLine.String()
+	}
 
 	for _, Line := range stashDetail {
 		line := style.NewStyle.Render(Line)

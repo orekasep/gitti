@@ -67,6 +67,7 @@ func InitGittiModel(tuiUpdateChannel chan interface{}, repoPath string, repoName
 		GitUpdateChannel:              gitUpdateChannel,
 		TuiUpdateChannel:              tuiUpdateChannel,
 		UserSetEditor:                 settings.GITTICONFIGSETTINGS.Editor,
+		UserSetDiffViewer:             settings.GITTICONFIGSETTINGS.DiffViewer,
 		CurrentSelectedComponent:      constant.ModifiedFilesComponentPanel,
 		CurrentSelectedComponentIndex: 2,
 		CurrentLocalBranchOrTagOrRemoteOrWorktreeComponentShowing: constant.SHOW_LOCAL_BRANCH,
@@ -170,6 +171,7 @@ func ReinitGittiModel(m *types.GittiModel, repoPath string, repoName string, git
 	// reinit all state on worktree switch to avoid cross-worktree contamination.
 	// Width/Height are intentionally preserved (terminal size is unchanged).
 	m.UserSetEditor = settings.GITTICONFIGSETTINGS.Editor
+	m.UserSetDiffViewer = settings.GITTICONFIGSETTINGS.DiffViewer
 	m.CurrentSelectedComponent = constant.ModifiedFilesComponentPanel
 	m.CurrentSelectedComponentIndex = 2
 	m.CurrentLocalBranchOrTagOrRemoteOrWorktreeComponentShowing = constant.SHOW_LOCAL_BRANCH

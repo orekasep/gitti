@@ -200,6 +200,7 @@ var zH_HANS = LanguageMapping{
 	KeyBindingModifiedFilesComponentConflict: []string{
 		"[space] 暂存此更改",
 		"[e] 编辑",
+		"[v] 查看差异",
 		"[r] 解决冲突",
 		"[enter] 查看修改内容",
 		"[F] 过滤",
@@ -208,6 +209,7 @@ var zH_HANS = LanguageMapping{
 	KeyBindingModifiedFilesComponentIsStaged: []string{
 		"[space] 取消暂存此更改",
 		"[e] 编辑",
+		"[v] 查看差异",
 		"[s] 储藏 (stash)",
 		"[S] 储藏所有更改",
 		"[d] 舍弃更改",
@@ -218,6 +220,7 @@ var zH_HANS = LanguageMapping{
 	KeyBindingModifiedFilesComponentDefault: []string{
 		"[space] 暂存此更改",
 		"[e] 编辑",
+		"[v] 查看差异",
 		"[s] 储藏 (stash)",
 		"[S] 储藏所有更改",
 		"[d] 舍弃更改",
@@ -237,6 +240,7 @@ var zH_HANS = LanguageMapping{
 	KeyBindingCommitLogComponent: []string{
 		"[</>] 切换组件",
 		"[↑/↓] 上下移动",
+		"[v] 查看差异",
 		"[enter] 查看提交日志内容",
 		"[t] 创建标签",
 		"[ctrl+r] 还原此提交",
@@ -255,6 +259,7 @@ var zH_HANS = LanguageMapping{
 	KeyBindingRefLogComponent: []string{
 		"[</>] 切换组件",
 		"[↑/↓] 上下移动",
+		"[v] 查看差异",
 		"[enter] 查看引用日志内容",
 		"[i] 交互式变基",
 		"[n] 基于此提交哈希创建新分支",
@@ -270,12 +275,15 @@ var zH_HANS = LanguageMapping{
 	KeyBindingKeyDetailComponent: []string{
 		"[←/→] 左右移动",
 		"[↑/↓] 上下移动",
+		"[v] 查看差异",
 		"[esc] 返回",
 		"[?] 快捷键与说明",
 	},
 	KeyBindingKeyDetailComponentLineEditingEligible: []string{
 		"[←/→] 左右移动",
 		"[↑/↓] 上下移动",
+		"[e] 编辑",
+		"[v] 查看差异",
 		"[L] 进入行编辑模式",
 		"[esc] 返回",
 		"[?] 快捷键与说明",
@@ -293,6 +301,7 @@ var zH_HANS = LanguageMapping{
 		"[space] 应用",
 		"[backspace] 弹出",
 		"[d] 丢弃",
+		"[v] 查看差异",
 		"[enter] 查看储藏内容",
 		"[F] 过滤",
 		"[?] 快捷键与说明",

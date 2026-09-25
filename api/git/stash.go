@@ -265,12 +265,13 @@ func (gs *GitStash) GitStashDetail(ctx context.Context, stashId string) []string
 	var gitArgs []string
 	isSmall, err := gs.isStashSmall(ctx, stashId)
 	if err != nil {
-		return parsedDetail
+		gs.logging.RegisterNewLog(logging.STASH_DETAIL, stashId, logging.WARN, fmt.Sprintf("[STASH SIZE CHECK FAILED]: %s", err.Error()), true)
+		isSmall = true
 	}
 	if isSmall {
-		gitArgs = []string{"stash", "show", "-p", "-u", stashId}
+		gitArgs = []string{"stash", "show", "--stat", "-p", "-u", stashId}
 	} else {
-		gitArgs = []string{"stash", "show", "-u", stashId}
+		gitArgs = []string{"stash", "show", "--stat", "-p", stashId}
 	}
 
 	detailCmdExecutor := executor.GittiCmdExecutor.RunGitCmdWithContext(ctx, gitArgs, true)
@@ -281,8 +282,20 @@ func (gs *GitStash) GitStashDetail(ctx context.Context, stashId string) []string
 			gs.logging.RegisterNewLog(logging.STASH_DETAIL, strings.Join(gitArgs, " "), logging.WARN, fmt.Sprintf("[%s CANCELLED]", logging.STASH_DETAIL), true)
 			return parsedDetail
 		}
-		gs.logging.RegisterNewLog(logging.STASH_DETAIL, strings.Join(gitArgs, " "), logging.ERROR, fmt.Sprintf("[%s ERROR]: %s", logging.STASH_DETAIL, detailCmdErr.Error()), true)
-		return parsedDetail
+		// If -u failed or unsupported on this stash/git version, fallback without -u
+		gitArgs = []string{"stash", "show", "--stat", "-p", stashId}
+		detailCmdExecutor = executor.GittiCmdExecutor.RunGitCmdWithContext(ctx, gitArgs, true)
+		stashDetailOutput, detailCmdErr = detailCmdExecutor.Output()
+		if detailCmdErr != nil {
+			// Further fallback to basic stash show
+			gitArgs = []string{"stash", "show", stashId}
+			detailCmdExecutor = executor.GittiCmdExecutor.RunGitCmdWithContext(ctx, gitArgs, true)
+			stashDetailOutput, detailCmdErr = detailCmdExecutor.Output()
+			if detailCmdErr != nil {
+				gs.logging.RegisterNewLog(logging.STASH_DETAIL, strings.Join(gitArgs, " "), logging.ERROR, fmt.Sprintf("[%s ERROR]: %s", logging.STASH_DETAIL, detailCmdErr.Error()), true)
+				return parsedDetail
+			}
+		}
 	}
 	parsedDetail = processGeneralGitOpsOutputIntoStringArray(stashDetailOutput)
 	return parsedDetail

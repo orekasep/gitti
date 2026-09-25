@@ -200,6 +200,7 @@ var jA = LanguageMapping{
 	KeyBindingModifiedFilesComponentConflict: []string{
 		"[space] この変更をステージ",
 		"[e] 編集",
+		"[v] 差分を表示",
 		"[r] 競合を解決",
 		"[enter] 変更内容を表示",
 		"[F] 絞り込み",
@@ -208,6 +209,7 @@ var jA = LanguageMapping{
 	KeyBindingModifiedFilesComponentIsStaged: []string{
 		"[space] この変更のステージを解除",
 		"[e] 編集",
+		"[v] 差分を表示",
 		"[s] スタッシュ",
 		"[S] すべての変更をスタッシュ",
 		"[d] 変更を破棄",
@@ -218,6 +220,7 @@ var jA = LanguageMapping{
 	KeyBindingModifiedFilesComponentDefault: []string{
 		"[space] この変更をステージ",
 		"[e] 編集",
+		"[v] 差分を表示",
 		"[s] スタッシュ",
 		"[S] すべての変更をスタッシュ",
 		"[d] 変更を破棄",
@@ -237,6 +240,7 @@ var jA = LanguageMapping{
 	KeyBindingCommitLogComponent: []string{
 		"[</>] コンポーネントを切り替え",
 		"[↑/↓] 上下に移動",
+		"[v] 差分を表示",
 		"[enter] コミットログの内容を表示",
 		"[t] タグを作成",
 		"[ctrl+r] このコミットをリバート",
@@ -255,6 +259,7 @@ var jA = LanguageMapping{
 	KeyBindingRefLogComponent: []string{
 		"[</>] コンポーネントを切り替え",
 		"[↑/↓] 上下に移動",
+		"[v] 差分を表示",
 		"[enter] 参照ログの内容を表示",
 		"[i] インタラクティブリベース",
 		"[n] コミットハッシュに基づいて新しいブランチを作成",
@@ -270,12 +275,15 @@ var jA = LanguageMapping{
 	KeyBindingKeyDetailComponent: []string{
 		"[←/→] 左右に移動",
 		"[↑/↓] 上下に移動",
+		"[v] 差分を表示",
 		"[esc] 戻る",
 		"[?] キー操作と説明",
 	},
 	KeyBindingKeyDetailComponentLineEditingEligible: []string{
 		"[←/→] 左右に移動",
 		"[↑/↓] 上下に移動",
+		"[e] 編集",
+		"[v] 差分を表示",
 		"[L] 行編集モードに入る",
 		"[esc] 戻る",
 		"[?] キー操作と説明",
@@ -293,6 +301,7 @@ var jA = LanguageMapping{
 		"[space] 適用",
 		"[backspace] ポップ",
 		"[d] 破棄",
+		"[v] 差分を表示",
 		"[enter] スタッシュ内容を表示",
 		"[F] 絞り込み",
 		"[?] キー操作と説明",

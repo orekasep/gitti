@@ -33,6 +33,7 @@ type GittiConfigSettings struct {
 	LastUpdateCheckTime             time.Time `json:"last_update_check_time"`
 	AutoUpdate                      bool      `json:"auto_update"`
 	Editor                          string    `json:"editor"`
+	DiffViewer                      string    `json:"diff_viewer"`
 	MaxCommitLogCount               int       `json:"max_commit_log_count"`
 	MaxRefLogCount                  int       `json:"max_reflog_count"`
 	AllowCommitGraphWrite           bool      `json:"allow_commit_graph_write"`
@@ -52,7 +53,8 @@ var GittiDefaultConfigSettings = GittiConfigSettings{
 	LanguageCode:                    "EN",
 	LastUpdateCheckTime:             time.Now().UTC(),
 	AutoUpdate:                      true,
-	Editor:                          "vim",
+	Editor:                          "auto",
+	DiffViewer:                      "auto",
 	MaxCommitLogCount:               2500,
 	MaxRefLogCount:                  2500,
 	AllowCommitGraphWrite:           true,

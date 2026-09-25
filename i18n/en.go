@@ -199,6 +199,7 @@ var eN = LanguageMapping{
 	KeyBindingModifiedFilesComponentConflict: []string{
 		"[space] stage this change",
 		"[e] edit",
+		"[v] diff view",
 		"[r] resolve conflict",
 		"[enter] view modified content",
 		"[F] filter",
@@ -207,6 +208,7 @@ var eN = LanguageMapping{
 	KeyBindingModifiedFilesComponentIsStaged: []string{
 		"[space] unstage this change",
 		"[e] edit",
+		"[v] diff view",
 		"[s] stash",
 		"[S] stash all changes",
 		"[d] discard changes",
@@ -217,6 +219,7 @@ var eN = LanguageMapping{
 	KeyBindingModifiedFilesComponentDefault: []string{
 		"[space] stage this change",
 		"[e] edit",
+		"[v] diff view",
 		"[s] stash",
 		"[S] stash all changes",
 		"[d] discard changes",
@@ -236,6 +239,7 @@ var eN = LanguageMapping{
 	KeyBindingCommitLogComponent: []string{
 		"[</>] switch component",
 		"[↑/↓] move up and down",
+		"[v] diff view",
 		"[enter] view commit log content",
 		"[t] create tag",
 		"[ctrl+r] revert this commit",
@@ -254,6 +258,7 @@ var eN = LanguageMapping{
 	KeyBindingRefLogComponent: []string{
 		"[</>] switch component",
 		"[↑/↓] move up and down",
+		"[v] diff view",
 		"[enter] view reflog content",
 		"[i] interactive rebase",
 		"[n] new branch based on commit hash",
@@ -269,12 +274,15 @@ var eN = LanguageMapping{
 	KeyBindingKeyDetailComponent: []string{
 		"[←/→] move left and right",
 		"[↑/↓] move up and down",
+		"[v] diff view",
 		"[esc] back",
 		"[?] keybinding and instructions",
 	},
 	KeyBindingKeyDetailComponentLineEditingEligible: []string{
 		"[←/→] move left and right",
 		"[↑/↓] move up and down",
+		"[e] edit",
+		"[v] diff view",
 		"[L] enter line editing mode",
 		"[esc] back",
 		"[?] keybinding and instructions",
@@ -292,6 +300,7 @@ var eN = LanguageMapping{
 		"[space] apply",
 		"[backspace] pop",
 		"[d] discard",
+		"[v] diff view",
 		"[enter] view stash content",
 		"[F] filter",
 		"[?] keybinding and instructions",

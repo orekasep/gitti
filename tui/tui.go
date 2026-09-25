@@ -126,7 +126,7 @@ func (gAM *GittiAppModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			}
 		case git.GIT_STASH_UPDATE:
 			needReinit := stashComponent.InitStashList(m)
-			if m.CurrentSelectedComponent == constant.StashComponentPanel {
+			if m.CurrentSelectedComponent == constant.StashComponentPanel || (m.CurrentSelectedComponent == constant.DetailComponentPanel && m.DetailPanelParentComponent == constant.StashComponentPanel) {
 				services.FetchDetailComponentPanelInfoService(m, needReinit)
 			}
 		case git.GIT_COMMIT_OUTPUT_UPDATE:
@@ -158,6 +158,10 @@ func (gAM *GittiAppModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		}
 		return gAM, nil
 	case types.EditorFinishedMsg:
+		services.FetchDetailComponentPanelInfoService(m, true)
+		return gAM, nil
+	case types.DiffViewerFinishedMsg:
+		services.FetchDetailComponentPanelInfoService(m, true)
 		return gAM, nil
 	case types.GitOperationRequiredSigningFinishedMsg:
 		if msg.Err != nil {

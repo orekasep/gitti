@@ -17,6 +17,7 @@ type GittiModel struct {
 	GitUpdateChannel                                          chan string // this is for git api to send signal to the main thread, we store it here so it can be reuse (like when worktree swtiching)
 	IsRenderInit                                              atomic.Bool // to indicate if the render has been initialized, this will be check by function that run once only after the screen is rendered
 	UserSetEditor                                             string
+	UserSetDiffViewer                                         string
 	TuiUpdateChannel                                          chan interface{}
 	CurrentSelectedComponent                                  string
 	CurrentSelectedComponentIndex                             int
@@ -144,6 +145,10 @@ type GittiLineEditingIndexPositionAndInfo struct {
 //
 // ---------------------------------
 type EditorFinishedMsg struct {
+	Err error
+}
+
+type DiffViewerFinishedMsg struct {
 	Err error
 }
 

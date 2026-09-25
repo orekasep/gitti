@@ -14,7 +14,16 @@ import (
 //
 // ------------------------------------
 func launchEditor(m *types.GittiModel, path string) (*types.GittiModel, tea.Cmd) {
-	cmd, isNonTerminalEditor := utils.ReturnEditorLaunchCommand(path, m.UserSetEditor)
+	return launchEditorWithLine(m, path, 0)
+}
+
+// ------------------------------------
+//
+//	Launches the user's defined system editor on the given path with an optional line number.
+//
+// ------------------------------------
+func launchEditorWithLine(m *types.GittiModel, path string, lineNum int) (*types.GittiModel, tea.Cmd) {
+	cmd, isNonTerminalEditor := utils.ReturnEditorLaunchCommandWithLine(path, lineNum, m.UserSetEditor)
 	if isNonTerminalEditor {
 		cmd.Start()
 		return m, nil
