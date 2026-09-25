@@ -13,7 +13,6 @@ import (
 	tagComponent "github.com/gohyuhan/gitti/tui/component/tag"
 	worktreeComponent "github.com/gohyuhan/gitti/tui/component/worktree"
 	"github.com/gohyuhan/gitti/tui/constant"
-	branchPopUp "github.com/gohyuhan/gitti/tui/popup/branch"
 	"github.com/gohyuhan/gitti/tui/services"
 	"github.com/gohyuhan/gitti/tui/types"
 	"github.com/gohyuhan/gitti/tui/utils"
@@ -95,7 +94,5 @@ func reinitFilteredList(m *types.GittiModel, filterKey string) {
 	case constant.StashComponentPanel:
 		needReinit := stashComponent.InitStashList(m)
 		services.FetchDetailComponentPanelInfoService(m, needReinit)
-	case constant.ChooseRemoteBranchOptionPopUp:
-		branchPopUp.InitChooseRemoteBranchOptionPopUpModel(m)
 	}
 }

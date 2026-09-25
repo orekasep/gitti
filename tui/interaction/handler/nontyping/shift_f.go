@@ -18,13 +18,6 @@ import (
 // ------------------------------------
 func handleNonTypingFKeyBindingInteraction(m *types.GittiModel) (*types.GittiModel, tea.Cmd) {
 	if m.ShowPopUp.Load() {
-		switch m.PopUpType {
-		case constant.ChooseRemoteBranchOptionPopUp:
-			if m.PanelFilterQuery == nil {
-				m.PanelFilterQuery = make(map[string]string)
-			}
-			m.IsPanelFiltering.Store(true)
-		}
 		return m, nil
 	}
 	if !m.IsLineEditingState.Load() {

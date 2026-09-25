@@ -148,28 +148,19 @@ func ListCounterHelper(m *types.GittiModel, list *list.Model, filterKey string) 
 // ------------------------------------
 //
 //	PopUpListCounterHelper returns a function that generates a counter display e.g. ("3/10")
-//	showing the current item position in the list for pop-up dialogs. An optional
-//	filterKey can be provided to append the current filter query when filtering is active.
+//	showing the current item position in the list for pop-up dialogs.
 //
 // ------------------------------------
-func PopUpListCounterHelper(m *types.GittiModel, list *list.Model, maxWidth int, filterKey ...string) func() []key.Binding {
+func PopUpListCounterHelper(m *types.GittiModel, list *list.Model, maxWidth int) func() []key.Binding {
 	return func() []key.Binding {
 		currentIndex := list.Index() + 1
 		totalCount := len(list.Items())
 		countStr := fmt.Sprintf("%d/%d", currentIndex, totalCount)
+		width := (min(maxWidth, int(float64(m.Width)*0.8)) - 4)
+		countStr = TruncateString(countStr, width-constant.ListItemOrTitleWidthPad-2)
 		if totalCount == 0 {
 			countStr = "0/0"
 		}
-		if len(filterKey) > 0 && filterKey[0] != "" {
-			k := filterKey[0]
-			if m.IsPanelFiltering.Load() && CurrentPanelFilterKey(m) == k {
-				countStr = fmt.Sprintf("%s  /%s█", countStr, m.PanelFilterQuery[k])
-			} else if query := m.PanelFilterQuery[k]; query != "" {
-				countStr = fmt.Sprintf("%s  /%s", countStr, query)
-			}
-		}
-		width := (min(maxWidth, int(float64(m.Width)*0.8)) - 4)
-		countStr = TruncateString(countStr, width-constant.ListItemOrTitleWidthPad-2)
 		return []key.Binding{
 			key.NewBinding(
 				key.WithKeys(countStr),

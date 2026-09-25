@@ -272,41 +272,33 @@ func InitChooseRemoteBranchOptionPopUpModel(m *types.GittiModel) {
 	for _, remoteBranch := range remoteBranches {
 		items = append(items, RemoteBranchItem(remoteBranch))
 	}
-	var previousSelectedBranch list.Item
-	selectedBranchPosition := 0
-	if popUp, ok := m.PopUpModel.(*ChooseRemoteBranchOptionPopUpModel); ok {
-		previousSelectedBranch = popUp.RemoteBranchOptionList.SelectedItem()
-		selectedBranchPosition = popUp.RemoteBranchOptionList.Index()
-	}
-	var query string
-	if m.PanelFilterQuery != nil {
-		query = m.PanelFilterQuery[constant.ChooseRemoteBranchOptionPopUp]
-	}
-	items, selectedBranchPosition = utils.FilterListItems(items, query, previousSelectedBranch, selectedBranchPosition)
 
 	width := (min(constant.MaxChooseRemoteBranchOptionPopUpWidth, int(float64(m.Width)*0.8)) - 4)
 	cRBOL := list.New(items, RemoteBranchItemDelegate{}, width, constant.PopUpChooseRemoteBranchOptionHeight)
 	cRBOL.SetShowPagination(false)
 	cRBOL.SetShowStatusBar(false)
-	cRBOL.SetFilteringEnabled(false)
+	cRBOL.SetFilteringEnabled(true)
 	cRBOL.SetShowTitle(false)
+
+	filterInput := textinput.New()
+	filterInput.SetValue("")
+	filterInput.Placeholder = i18n.LANGUAGEMAPPING.RemoteBranchFilterPlaceholder
+	filterInput.Focus()
+	filterInput.SetVirtualCursor(true)
 
 	// Custom Help Model for Count Display
 	cRBOL.SetShowHelp(true)
 	cRBOL.KeyMap = list.KeyMap{} // Clear default keybindings to hide them
 	cRBOL.Styles.HelpStyle = style.NewStyle.MarginTop(0).MarginBottom(0).PaddingTop(0).PaddingBottom(0)
-	cRBOL.AdditionalShortHelpKeys = utils.PopUpListCounterHelper(m, &cRBOL, constant.MaxChooseRemoteBranchOptionPopUpWidth, constant.ChooseRemoteBranchOptionPopUp)
+	cRBOL.AdditionalShortHelpKeys = utils.PopUpListCounterHelper(m, &cRBOL, constant.MaxChooseRemoteBranchOptionPopUpWidth)
 
 	if len(items) > 0 {
-		if selectedBranchPosition >= 0 && selectedBranchPosition < len(items) {
-			cRBOL.Select(selectedBranchPosition)
-		} else {
-			cRBOL.Select(0)
-		}
+		cRBOL.Select(0)
 	}
 
 	m.PopUpModel = &ChooseRemoteBranchOptionPopUpModel{
 		RemoteBranchOptionList: cRBOL,
+		FilteringInput:         filterInput,
 	}
 }
 

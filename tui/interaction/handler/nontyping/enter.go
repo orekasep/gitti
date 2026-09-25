@@ -209,13 +209,9 @@ func handleNonTypingEnterKeyBindingInteraction(m *types.GittiModel) (*types.Gitt
 						}
 					}
 				case git.NEWBRANCHBASEDONREMOTEUSERSELECT:
-					if m.PanelFilterQuery != nil {
-						delete(m.PanelFilterQuery, constant.ChooseRemoteBranchOptionPopUp)
-					}
-					m.IsPanelFiltering.Store(false)
 					m.PopUpType = constant.ChooseRemoteBranchOptionPopUp
 					m.ShowPopUp.Store(true)
-					m.IsTyping.Store(false)
+					m.IsTyping.Store(true)
 					branchPopUp.InitChooseRemoteBranchOptionPopUpModel(m)
 				default:
 					m.PopUpType = constant.CreateNewBranchPopUp
@@ -652,10 +648,6 @@ func handleNonTypingEnterKeyBindingInteraction(m *types.GittiModel) (*types.Gitt
 				if selectedRemoteBranch != nil {
 					branchName := selectedRemoteBranch.(branchPopUp.RemoteBranchItem).BranchName
 					if utf8.RuneCountInString(branchName) > 0 {
-						if m.PanelFilterQuery != nil {
-							delete(m.PanelFilterQuery, constant.ChooseRemoteBranchOptionPopUp)
-						}
-						m.IsPanelFiltering.Store(false)
 						branchPopUp.InitCreateBranchBasedOnRemoteOutputPopUpModel(m)
 						popUp, ok := m.PopUpModel.(*branchPopUp.CreateBranchBasedOnRemoteOutputPopUpModel)
 						if ok {
