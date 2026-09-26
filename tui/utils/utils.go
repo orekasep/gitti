@@ -68,13 +68,6 @@ func TruncateString(s string, maxWidth int) string {
 //
 // ------------------------------------
 func CurrentPanelFilterKey(m *types.GittiModel) string {
-	if m.ShowPopUp.Load() {
-		switch m.PopUpType {
-		case constant.ChooseRemoteBranchOptionPopUp:
-			return constant.ChooseRemoteBranchOptionPopUp
-		}
-		return ""
-	}
 	switch m.CurrentSelectedComponent {
 	case constant.LocalBranchOrTagOrRemoteOrWorktreeComponentPanel:
 		return m.CurrentLocalBranchOrTagOrRemoteOrWorktreeComponentShowing

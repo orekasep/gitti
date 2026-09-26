@@ -292,10 +292,6 @@ func InitChooseRemoteBranchOptionPopUpModel(m *types.GittiModel) {
 	cRBOL.Styles.HelpStyle = style.NewStyle.MarginTop(0).MarginBottom(0).PaddingTop(0).PaddingBottom(0)
 	cRBOL.AdditionalShortHelpKeys = utils.PopUpListCounterHelper(m, &cRBOL, constant.MaxChooseRemoteBranchOptionPopUpWidth)
 
-	if len(items) > 0 {
-		cRBOL.Select(0)
-	}
-
 	m.PopUpModel = &ChooseRemoteBranchOptionPopUpModel{
 		RemoteBranchOptionList: cRBOL,
 		FilteringInput:         filterInput,

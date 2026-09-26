@@ -124,13 +124,13 @@ func handleNonTypingEscKeyBindingInteraction(m *types.GittiModel) (*types.GittiM
 			constant.GitRevertParentOptionSelectionPopUp,
 			constant.GitRevertConfirmationPopUp,
 			constant.GitCherryPickFromRefLogApplyConfirmationPopUp,
+			constant.ChooseRemoteBranchOptionPopUp,
 			constant.ChooseBranchOptionForMergePopUp,
 			constant.InteractiveRebaseOptionPopUp,
 			constant.InteractiveRebaseFixupSquashSelectionPopUp,
 			constant.InteractiveRebaseRewordSelectionPopUp,
 			constant.InteractiveRebaseDropSelectionPopUp,
-			constant.WorktreeRemoveWorktreeConfirmationPopUp,
-			constant.ChooseRemoteBranchOptionPopUp:
+			constant.WorktreeRemoveWorktreeConfirmationPopUp:
 			// simple closing of the pop up
 			m.ShowPopUp.Store(false)
 			m.IsTyping.Store(false)
