@@ -39,6 +39,9 @@ func handleNonTypingEscKeyBindingInteraction(m *types.GittiModel) (*types.GittiM
 		case constant.DeleteTagOutputPopUp:
 			services.DeleteTagCancelService(m)
 			m.PopUpModel = nil
+		case constant.CheckoutTagOutputPopUp:
+			services.CheckoutTagCancelService(m)
+			m.PopUpModel = nil
 		case constant.GitRebaseOutputPopUp:
 			services.GitRebaseCancelService(m)
 			m.PopUpModel = nil
@@ -118,6 +121,7 @@ func handleNonTypingEscKeyBindingInteraction(m *types.GittiModel) (*types.GittiM
 			constant.GitCherryPickApplyConfirmPopUp,
 			constant.GitDiscardFileLineChangeConfirmPopUp,
 			constant.CreateTagConfirmationPopUp,
+			constant.ChooseTagActionPopUp,
 			constant.ChooseDeleteTagOptionPopUp,
 			constant.ChooseRemoteForDeleteRemoteTagPopUp,
 			constant.ChoosePushTagOptionPopUp,

@@ -205,6 +205,8 @@ type LanguageMapping struct {
 	KeyBindingForKeybindingAndFeatureInstructionsPopUp         []string
 	KeyBindingForCreateTagPopUp                                []string
 	KeyBindingForCreateTagConfirmationPopUp                    []string
+	KeyBindingForChooseTagActionPopUp                          []string
+	KeyBindingForCheckoutTagOutputPopUp                        []string
 	KeyBindingForChooseDeleteTagOptionPopUp                    []string
 	KeyBindingForChooseRemoteForDeleteRemoteTagPopUp           []string
 	KeyBindingForDeleteTagOutputPopUp                          []string
@@ -323,20 +325,21 @@ type LanguageMapping struct {
 	ForcePushSafe      string
 	ForcePushDangerous string
 	// Create New Branch
-	CreateNewBranchPrompt      string
-	EnterRemoteBranchPrompt    string
-	CreateNewWorktreePrompt    string
-	NewWorktreeBranchPrompt    string
-	WorktreeLockReasonPrompt   string
-	WorktreeLockReasonTitle    string
-	WorktreeRemoveConfirmation string
-	AddNewWorktreeTitle        string
-	NewWorktreeTitle           string
-	AddingNewWorktree          string
-	NewWorktreeBranchTitle     string
-	ChooseNewBranchTypeTitle   string
-	NewBranchInvalidWarning    string
-	RenameBranchTitle          string
+	CreateNewBranchPrompt          string
+	EnterRemoteBranchPrompt        string
+	CreateNewWorktreePrompt        string
+	NewWorktreeBranchPrompt        string
+	WorktreeLockReasonPrompt       string
+	WorktreeLockReasonTitle        string
+	WorktreeRemoveConfirmation     string
+	AddNewWorktreeTitle            string
+	NewWorktreeTitle               string
+	AddingNewWorktree              string
+	NewWorktreeBranchTitle         string
+	ChooseNewBranchTypeTitle       string
+	NewBranchInvalidWarning        string
+	RenameBranchTitle              string
+	CreateNewBranchBasedOnTagTitle string
 	// Create Branch Option
 	CreateNewBranchTitle                                 string
 	CreateNewBranchDescription                           string
@@ -453,6 +456,13 @@ type LanguageMapping struct {
 	CreateTagPopUpMessageTitle               string
 	CreateTagPopUpMessageInputPlaceHolder    string
 	CreateTagConfirmation                    string
+	ChooseTagActionTitle                     string
+	ChooseTagActionCheckoutOption            string
+	ChooseTagActionCheckoutOptionInfo        string
+	ChooseTagActionCreateBranchOption        string
+	ChooseTagActionCreateBranchOptionInfo    string
+	CheckoutTagOutputPopUpTitle              string
+	CheckoutTagCheckingOut                   string
 	ChooseDeleteTagOptionTitle               string
 	DeleteTagPopUpDeleteLocalTagOption       string
 	DeleteTagPopUpDeleteLocalTagOptionInfo   string
