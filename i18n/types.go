@@ -203,6 +203,8 @@ type LanguageMapping struct {
 	KeyBindingForKeybindingAndFeatureInstructionsPopUp         []string
 	KeyBindingForCreateTagPopUp                                []string
 	KeyBindingForCreateTagConfirmationPopUp                    []string
+	KeyBindingForChooseTagActionPopUp                          []string
+	KeyBindingForCheckoutTagOutputPopUp                        []string
 	KeyBindingForChooseDeleteTagOptionPopUp                    []string
 	KeyBindingForChooseRemoteForDeleteRemoteTagPopUp           []string
 	KeyBindingForDeleteTagOutputPopUp                          []string
@@ -339,7 +341,8 @@ type LanguageMapping struct {
 	NewWorktreeBranchTitle     string
 	ChooseNewBranchTypeTitle   string
 	NewBranchInvalidWarning    string
-	RenameBranchTitle          string
+	RenameBranchTitle                  string
+	CreateNewBranchBasedOnTagTitle     string
 	// Create Branch Option
 	CreateNewBranchTitle                                 string
 	CreateNewBranchDescription                           string
@@ -455,6 +458,13 @@ type LanguageMapping struct {
 	CreateTagPopUpMessageTitle               string
 	CreateTagPopUpMessageInputPlaceHolder    string
 	CreateTagConfirmation                    string
+	ChooseTagActionTitle                     string
+	ChooseTagActionCheckoutOption            string
+	ChooseTagActionCheckoutOptionInfo        string
+	ChooseTagActionCreateBranchOption        string
+	ChooseTagActionCreateBranchOptionInfo    string
+	CheckoutTagOutputPopUpTitle              string
+	CheckoutTagCheckingOut                   string
 	ChooseDeleteTagOptionTitle               string
 	DeleteTagPopUpDeleteLocalTagOption       string
 	DeleteTagPopUpDeleteLocalTagOptionInfo   string
