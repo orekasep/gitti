@@ -1,11 +1,18 @@
 package nontyping
 
 import (
+	"os"
+	"os/exec"
+	"path/filepath"
 	"testing"
+	"time"
 
 	"charm.land/bubbles/v2/list"
+	"github.com/gohyuhan/gitti/api"
 	"github.com/gohyuhan/gitti/api/git"
+	"github.com/gohyuhan/gitti/executor"
 	"github.com/gohyuhan/gitti/i18n"
+	"github.com/gohyuhan/gitti/logging"
 	tagComponent "github.com/gohyuhan/gitti/tui/component/tag"
 	"github.com/gohyuhan/gitti/tui/constant"
 	branchPopUp "github.com/gohyuhan/gitti/tui/popup/branch"
@@ -17,7 +24,42 @@ func init() {
 	i18n.InitGittiLanguageMapping("EN")
 }
 
-func setupTagModel(tagName string) *types.GittiModel {
+func setupTagModel(t *testing.T, tagName string) *types.GittiModel {
+	t.Helper()
+	t.Setenv("GIT_CONFIG_GLOBAL", os.DevNull)
+	t.Setenv("GIT_CONFIG_NOSYSTEM", "1")
+	tempDir := t.TempDir()
+
+	run := func(args ...string) {
+		cmd := exec.Command("git", args...)
+		cmd.Dir = tempDir
+		cmd.Env = append(os.Environ(), "GIT_AUTHOR_NAME=Test", "GIT_AUTHOR_EMAIL=test@example.com", "GIT_COMMITTER_NAME=Test", "GIT_COMMITTER_EMAIL=test@example.com")
+		if out, err := cmd.CombinedOutput(); err != nil {
+			t.Fatalf("git %v failed: %s", args, string(out))
+		}
+	}
+
+	run("init")
+	run("config", "user.name", "Test")
+	run("config", "user.email", "test@example.com")
+
+	dummyFile := filepath.Join(tempDir, "test.txt")
+	if err := os.WriteFile(dummyFile, []byte("hello\n"), 0644); err != nil {
+		t.Fatalf("failed to write test file: %v", err)
+	}
+	run("add", "test.txt")
+	run("commit", "-m", "init")
+	run("tag", tagName)
+
+	executor.InitCmdExecutor(tempDir)
+	logChan := make(chan string, 100)
+	logger := logging.InitGittiLogging(100, logChan, 10)
+	lock := git.InitGitProcessLock(logger)
+	gitBranch := git.InitGitBranch(lock, true, logger)
+	gitOps := &api.GitOperations{
+		GitBranch: gitBranch,
+	}
+
 	tagItems := []list.Item{
 		tagComponent.GitTagItem{
 			TagName: tagName,
@@ -26,13 +68,14 @@ func setupTagModel(tagName string) *types.GittiModel {
 	tagList := list.New(tagItems, tagComponent.GitTagItemDelegate{}, 80, 20)
 
 	m := &types.GittiModel{
-		Width:                                                     100,
-		Height:                                                    40,
-		CurrentSelectedComponent:                                  constant.LocalBranchOrTagOrRemoteOrWorktreeComponentPanel,
+		Width:                    100,
+		Height:                   40,
+		CurrentSelectedComponent: constant.LocalBranchOrTagOrRemoteOrWorktreeComponentPanel,
 		CurrentLocalBranchOrTagOrRemoteOrWorktreeComponentShowing: constant.SHOW_TAG,
-		CurrentRepoTagInfoList:                                    tagList,
-		TuiUpdateChannel:                                          make(chan interface{}, 10),
-		PopUpType:                                                 constant.NoPopUp,
+		CurrentRepoTagInfoList: tagList,
+		TuiUpdateChannel:       make(chan interface{}, 10),
+		PopUpType:              constant.NoPopUp,
+		GitOperations:          gitOps,
 	}
 	m.ShowPopUp.Store(false)
 	m.IsTyping.Store(false)
@@ -40,7 +83,7 @@ func setupTagModel(tagName string) *types.GittiModel {
 }
 
 func TestTagEnter_OpensChooseTagActionPopUp(t *testing.T) {
-	m := setupTagModel("v1.0.0")
+	m := setupTagModel(t, "v1.0.0")
 
 	resModel, _ := handleNonTypingEnterKeyBindingInteraction(m)
 
@@ -63,30 +106,68 @@ func TestTagEnter_OpensChooseTagActionPopUp(t *testing.T) {
 }
 
 func TestTagEnter_SelectCheckoutTagOption(t *testing.T) {
-	m := setupTagModel("v2.0.0")
+	m := setupTagModel(t, "v2.0.0")
 	// Open choose tag action popup
 	m, _ = handleNonTypingEnterKeyBindingInteraction(m)
 
 	popUp := m.PopUpModel.(*tagPopUp.ChooseTagActionPopUpModel)
 	popUp.TagActionList.Select(0) // Checkout option
 
-	// Press enter on the option
+	// Press enter on the option -> transitions to choose switch type popup
 	resModel, _ := handleNonTypingEnterKeyBindingInteraction(m)
 
-	if resModel.PopUpType != constant.CheckoutTagOutputPopUp {
-		t.Fatalf("expected PopUpType to be %s, got %s", constant.CheckoutTagOutputPopUp, resModel.PopUpType)
+	if resModel.PopUpType != constant.ChooseSwitchBranchTypePopUp {
+		t.Fatalf("expected PopUpType to be %s, got %s", constant.ChooseSwitchBranchTypePopUp, resModel.PopUpType)
 	}
-	checkoutPopUp, ok := resModel.PopUpModel.(*tagPopUp.CheckoutTagOutputPopUpModel)
+	switchPopUp, ok := resModel.PopUpModel.(*branchPopUp.ChooseSwitchBranchTypePopUpModel)
 	if !ok {
-		t.Fatalf("expected PopUpModel to be *tagPopUp.CheckoutTagOutputPopUpModel")
+		t.Fatalf("expected PopUpModel to be *branchPopUp.ChooseSwitchBranchTypePopUpModel")
 	}
-	if checkoutPopUp.TagName != "v2.0.0" {
-		t.Errorf("expected TagName 'v2.0.0', got '%s'", checkoutPopUp.TagName)
+	if switchPopUp.BranchName != "refs/tags/v2.0.0" {
+		t.Errorf("expected BranchName 'refs/tags/v2.0.0', got '%s'", switchPopUp.BranchName)
+	}
+
+	// Press enter on switch type option -> transitions to SwitchBranchOutputPopUp
+	switchPopUp.SwitchTypeOptionList.Select(0)
+	resModel, cmd := handleNonTypingEnterKeyBindingInteraction(resModel)
+	if resModel.PopUpType != constant.SwitchBranchOutputPopUp {
+		t.Fatalf("expected PopUpType to be %s, got %s", constant.SwitchBranchOutputPopUp, resModel.PopUpType)
+	}
+	outputPopUp, ok := resModel.PopUpModel.(*branchPopUp.SwitchBranchOutputPopUpModel)
+	if !ok {
+		t.Fatalf("expected PopUpModel to be *branchPopUp.SwitchBranchOutputPopUpModel")
+	}
+	if outputPopUp.BranchName != "refs/tags/v2.0.0" {
+		t.Errorf("expected BranchName 'refs/tags/v2.0.0', got '%s'", outputPopUp.BranchName)
+	}
+	if !outputPopUp.IsProcessing.Load() {
+		t.Errorf("expected IsProcessing to be true")
+	}
+	if cmd == nil {
+		t.Errorf("expected spinner tick cmd to be returned")
+	}
+
+	// Wait for switch branch result event from channel
+	select {
+	case msg := <-m.TuiUpdateChannel:
+		updateMsg, ok := msg.(types.GittiTuiUpdateMsg)
+		if !ok {
+			t.Fatalf("expected GittiTuiUpdateMsg, got %T", msg)
+		}
+		if updateMsg.Event != constant.GIT_SWITCH_BRANCH_RESULT_EVENT {
+			t.Errorf("expected event %s, got %s", constant.GIT_SWITCH_BRANCH_RESULT_EVENT, updateMsg.Event)
+		}
+		data, ok := updateMsg.Data.(types.GitSwitchBranchResultEventDataStructure)
+		if !ok || !data.Success {
+			t.Errorf("expected switch branch to succeed, got %v", updateMsg.Data)
+		}
+	case <-time.After(2 * time.Second):
+		t.Fatal("timed out waiting for switch branch result event")
 	}
 }
 
 func TestTagEnter_SelectCreateBranchOption(t *testing.T) {
-	m := setupTagModel("v3.0.0")
+	m := setupTagModel(t, "v3.0.0")
 	// Open choose tag action popup
 	m, _ = handleNonTypingEnterKeyBindingInteraction(m)
 
@@ -115,7 +196,7 @@ func TestTagEnter_SelectCreateBranchOption(t *testing.T) {
 }
 
 func TestTagNKey_DirectlyOpensCreateBranchPopUp(t *testing.T) {
-	m := setupTagModel("v4.0.0")
+	m := setupTagModel(t, "v4.0.0")
 
 	resModel, _ := handleNonTypingnKeyBindingInteraction(m)
 

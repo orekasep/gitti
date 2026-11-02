@@ -528,9 +528,6 @@ var eN = LanguageMapping{
 		"[enter] select tag action",
 		"[esc] cancel / close",
 	},
-	KeyBindingForCheckoutTagOutputPopUp: []string{
-		"[esc] cancel / close",
-	},
 	KeyBindingForChooseDeleteTagOptionPopUp: []string{
 		"[↑/↓] move up and down",
 		"[enter] select delete tag option",
@@ -849,8 +846,6 @@ var eN = LanguageMapping{
 	ChooseTagActionCheckoutOptionInfo:                              "Checkout tag '%s' directly into detached HEAD state",
 	ChooseTagActionCreateBranchOption:                              "Create new branch from '%s'",
 	ChooseTagActionCreateBranchOptionInfo:                          "Create a new branch based on tag '%s' and switch to it",
-	CheckoutTagOutputPopUpTitle:                                    "Checkout Tag [%s]",
-	CheckoutTagCheckingOut:                                         "Checking out tag...",
 	ChooseDeleteTagOptionTitle:                                     "Choose the tag deletion option",
 	DeleteTagPopUpDeleteLocalTagOption:                             "Delete local '%s' tag",
 	DeleteTagPopUpDeleteLocalTagOptionInfo:                         "Delete '%s' tag on local repository",
@@ -1189,6 +1184,16 @@ var enTagComponentKeyBinding = []KeyBindingMappingFormat{
 	{
 		KeyBindingLine:  "",
 		TitleOrInfoLine: "",
+		LineType:        INFO,
+	},
+	{
+		KeyBindingLine:  "enter",
+		TitleOrInfoLine: "checkout tag (detached HEAD) or create branch from tag",
+		LineType:        INFO,
+	},
+	{
+		KeyBindingLine:  "n",
+		TitleOrInfoLine: "create new branch from tag",
 		LineType:        INFO,
 	},
 	{
@@ -2136,6 +2141,29 @@ var enFeatureInstructions = []FeatureInstructionMappingFormat{
 			"   - Fetch tag(s) mirror - Mirror all tags from remote",
 			"4. Press `enter` to confirm",
 			"5. Press `esc` to close output",
+		},
+		LineType: INFO,
+	},
+	{
+		Feature: "checkout tag",
+		InstructionLines: []string{
+			"1. Navigate to Tag component (press `1`) or switch to Tag component (press `< >`)",
+			"2. Select the tag using `↑/↓`",
+			"3. Press `enter` to open tag action menu",
+			"4. Select checkout tag option to switch in detached HEAD state",
+			"5. Select switch type (with or without changes)",
+			"6. Press `enter` to confirm",
+		},
+		LineType: INFO,
+	},
+	{
+		Feature: "create branch from tag",
+		InstructionLines: []string{
+			"1. Navigate to Tag component (press `1`) or switch to Tag component (press `< >`)",
+			"2. Select the tag using `↑/↓`",
+			"3. Press `n` (or press `enter` and select create branch option)",
+			"4. Enter the new branch name",
+			"5. Press `enter` to create and switch to the new branch",
 		},
 		LineType: INFO,
 	},

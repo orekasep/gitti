@@ -496,7 +496,7 @@ func (gt *GitTag) GitCheckoutTag(tagName string) ([]string, bool) {
 	}
 	defer gt.gitProcessLock.ReleaseGitOpsLock()
 
-	gitArgs := []string{"checkout", "tags/" + tagName, "--"}
+	gitArgs := []string{"checkout", "--detach", "refs/tags/" + tagName}
 	cmdExecutor := executor.GittiCmdExecutor.RunGitCmd(gitArgs, false)
 	output, err := cmdExecutor.CombinedOutput()
 	outputLines := processGeneralGitOpsOutputIntoStringArray(output)
@@ -507,4 +507,3 @@ func (gt *GitTag) GitCheckoutTag(tagName string) ([]string, bool) {
 	}
 	return outputLines, true
 }
-

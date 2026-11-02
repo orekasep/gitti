@@ -13,6 +13,8 @@ import (
 
 func setupTestGitRepoWithTag(t *testing.T, tagName string) (*GitTag, *GitBranch, string) {
 	t.Helper()
+	t.Setenv("GIT_CONFIG_GLOBAL", os.DevNull)
+	t.Setenv("GIT_CONFIG_NOSYSTEM", "1")
 	tempDir := t.TempDir()
 
 	run := func(args ...string) {
@@ -49,17 +51,86 @@ func setupTestGitRepoWithTag(t *testing.T, tagName string) (*GitTag, *GitBranch,
 }
 
 func TestGitCheckoutTag(t *testing.T) {
-	gitTag, gitBranch, _ := setupTestGitRepoWithTag(t, "v1.0.0")
+	gitTag, _, tempDir := setupTestGitRepoWithTag(t, "v1.0.0")
 
 	output, success := gitTag.GitCheckoutTag("v1.0.0")
 	if !success {
 		t.Fatalf("GitCheckoutTag failed, output: %v", output)
 	}
 
-	gitBranch.GetLatestBranchesInfo()
-	current := gitBranch.CurrentCheckOut()
-	if !current.IsCheckedOut {
-		t.Errorf("expected branch/head to be checked out")
+	// Verify HEAD is detached: git symbolic-ref -q HEAD fails
+	symCmd := exec.Command("git", "symbolic-ref", "-q", "HEAD")
+	symCmd.Dir = tempDir
+	if err := symCmd.Run(); err == nil {
+		t.Errorf("expected symbolic-ref to fail for detached HEAD, but succeeded")
+	}
+
+	// Verify HEAD points to the tag commit
+	headCmd := exec.Command("git", "rev-parse", "HEAD")
+	headCmd.Dir = tempDir
+	headOut, err := headCmd.Output()
+	if err != nil {
+		t.Fatalf("failed to rev-parse HEAD: %v", err)
+	}
+
+	tagCmd := exec.Command("git", "rev-parse", "v1.0.0^{commit}")
+	tagCmd.Dir = tempDir
+	tagOut, err := tagCmd.Output()
+	if err != nil {
+		t.Fatalf("failed to rev-parse tag commit: %v", err)
+	}
+
+	if string(headOut) != string(tagOut) {
+		t.Errorf("expected HEAD (%s) to match tag commit (%s)", string(headOut), string(tagOut))
+	}
+}
+
+func TestGitCheckoutTag_AmbiguousBranchName(t *testing.T) {
+	gitTag, _, tempDir := setupTestGitRepoWithTag(t, "v1.0.0")
+
+	// Create an ambiguous branch named tags/v1.0.0 on a second commit
+	dummyFile := filepath.Join(tempDir, "dummy.txt")
+	if err := os.WriteFile(dummyFile, []byte("second commit\n"), 0644); err != nil {
+		t.Fatalf("failed to write dummy file: %v", err)
+	}
+	cmdAdd := exec.Command("git", "add", "dummy.txt")
+	cmdAdd.Dir = tempDir
+	if err := cmdAdd.Run(); err != nil {
+		t.Fatalf("git add failed: %v", err)
+	}
+	cmdCommit := exec.Command("git", "commit", "-m", "second commit")
+	cmdCommit.Dir = tempDir
+	if err := cmdCommit.Run(); err != nil {
+		t.Fatalf("git commit failed: %v", err)
+	}
+	cmdBranch := exec.Command("git", "branch", "tags/v1.0.0")
+	cmdBranch.Dir = tempDir
+	if err := cmdBranch.Run(); err != nil {
+		t.Fatalf("git branch failed: %v", err)
+	}
+
+	output, success := gitTag.GitCheckoutTag("v1.0.0")
+	if !success {
+		t.Fatalf("GitCheckoutTag failed, output: %v", output)
+	}
+
+	// Must be on tag commit (detached HEAD), not on branch tags/v1.0.0
+	tagCmd := exec.Command("git", "rev-parse", "v1.0.0^{commit}")
+	tagCmd.Dir = tempDir
+	tagOut, err := tagCmd.Output()
+	if err != nil {
+		t.Fatalf("failed to rev-parse tag commit: %v", err)
+	}
+
+	headCmd := exec.Command("git", "rev-parse", "HEAD")
+	headCmd.Dir = tempDir
+	headOut, err := headCmd.Output()
+	if err != nil {
+		t.Fatalf("failed to rev-parse HEAD: %v", err)
+	}
+
+	if string(headOut) != string(tagOut) {
+		t.Errorf("expected HEAD to match tag commit, got %s vs %s", string(headOut), string(tagOut))
 	}
 }
 

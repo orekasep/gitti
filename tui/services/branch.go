@@ -173,9 +173,6 @@ func GitCreateNewBranchBasedOnTagAndSwitchService(m *types.GittiModel, validBran
 		if utf8.RuneCountInString(validBranchName) < 1 || utf8.RuneCountInString(tagName) < 1 {
 			return
 		}
-		if m.GitOperations == nil || m.GitOperations.GitBranch == nil {
-			return
-		}
 		m.GitOperations.GitBranch.GitCreateNewBranchBasedOnTagAndSwitch(validBranchName, tagName)
 	}()
 }

@@ -529,9 +529,6 @@ var jA = LanguageMapping{
 		"[enter] タグアクションを選択",
 		"[esc] キャンセル / 閉じる",
 	},
-	KeyBindingForCheckoutTagOutputPopUp: []string{
-		"[esc] キャンセル / 閉じる",
-	},
 	KeyBindingForChooseDeleteTagOptionPopUp: []string{
 		"[↑/↓] 上下移動",
 		"[enter] 削除タグオプションを選択",
@@ -850,8 +847,6 @@ var jA = LanguageMapping{
 	ChooseTagActionCheckoutOptionInfo:                              "タグ '%s' を直接デタッチド HEAD 状態でチェックアウトします",
 	ChooseTagActionCreateBranchOption:                              "'%s' から新しいブランチを作成",
 	ChooseTagActionCreateBranchOptionInfo:                          "タグ '%s' に基づいて新しいブランチを作成し、切り替えます",
-	CheckoutTagOutputPopUpTitle:                                    "タグのチェックアウト [%s]",
-	CheckoutTagCheckingOut:                                         "タグをチェックアウト中...",
 	ChooseDeleteTagOptionTitle:                                     "タグ削除オプションを選択",
 	DeleteTagPopUpDeleteLocalTagOption:                             "ローカルの '%s' タグを削除",
 	DeleteTagPopUpDeleteLocalTagOptionInfo:                         "ローカルリポジトリの '%s' タグを削除します",
@@ -1192,6 +1187,16 @@ var jaTagComponentKeyBinding = []KeyBindingMappingFormat{
 	{
 		KeyBindingLine:  "",
 		TitleOrInfoLine: "",
+		LineType:        INFO,
+	},
+	{
+		KeyBindingLine:  "enter",
+		TitleOrInfoLine: "タグをチェックアウト（デタッチド HEAD）またはタグからブランチを作成",
+		LineType:        INFO,
+	},
+	{
+		KeyBindingLine:  "n",
+		TitleOrInfoLine: "タグから新しいブランチを作成",
 		LineType:        INFO,
 	},
 	{
@@ -2139,6 +2144,29 @@ var jaFeatureInstructions = []FeatureInstructionMappingFormat{
 			"   - タグをフェッチしてミラーリング (mirror) - すべてのタグをリモートと同期",
 			"4. `enter` を押して確定",
 			"5. `esc` を押して出力を閉じる",
+		},
+		LineType: INFO,
+	},
+	{
+		Feature: "タグのチェックアウト (checkout tag)",
+		InstructionLines: []string{
+			"1. タグコンポーネントに移動（`1` を押す）またはタグコンポーネントに切り替え（`< >` を押す）",
+			"2. `↑/↓` でタグを選択",
+			"3. `enter` を押してタグアクションメニューを開く",
+			"4. タグのチェックアウトオプションを選択してデタッチド HEAD 状態に切り替える",
+			"5. 切り替え方法を選択（変更あり/なし）",
+			"6. `enter` で確定",
+		},
+		LineType: INFO,
+	},
+	{
+		Feature: "タグからブランチを作成 (create branch from tag)",
+		InstructionLines: []string{
+			"1. タグコンポーネントに移動（`1` を押す）またはタグコンポーネントに切り替え（`< >` を押す）",
+			"2. `↑/↓` でタグを選択",
+			"3. `n` を押す（または `enter` を押してブランチ作成オプションを選択）",
+			"4. 新しいブランチ名を入力",
+			"5. `enter` でブランチを作成して切り替える",
 		},
 		LineType: INFO,
 	},

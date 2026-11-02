@@ -529,9 +529,6 @@ var zH_HANT = LanguageMapping{
 		"[enter] 選擇標籤操作",
 		"[esc] 取消 / 關閉",
 	},
-	KeyBindingForCheckoutTagOutputPopUp: []string{
-		"[esc] 取消 / 關閉",
-	},
 	KeyBindingForChooseDeleteTagOptionPopUp: []string{
 		"[↑/↓] 上下移動",
 		"[enter] 選擇刪除標籤選項",
@@ -850,8 +847,6 @@ var zH_HANT = LanguageMapping{
 	ChooseTagActionCheckoutOptionInfo:                              "直接將標籤 '%s' 簽出為分離 HEAD 狀態",
 	ChooseTagActionCreateBranchOption:                              "從 '%s' 建立新分支",
 	ChooseTagActionCreateBranchOptionInfo:                          "基於標籤 '%s' 建立新分支並切換至該分支",
-	CheckoutTagOutputPopUpTitle:                                    "簽出標籤 [%s]",
-	CheckoutTagCheckingOut:                                         "正在簽出標籤...",
 	ChooseDeleteTagOptionTitle:                                     "選擇標籤刪除選項",
 	DeleteTagPopUpDeleteLocalTagOption:                             "刪除本地 '%s' 標籤",
 	DeleteTagPopUpDeleteLocalTagOptionInfo:                         "刪除本地儲存庫中的 '%s' 標籤",
@@ -1191,6 +1186,16 @@ var zhHantTagComponentKeyBinding = []KeyBindingMappingFormat{
 	{
 		KeyBindingLine:  "",
 		TitleOrInfoLine: "",
+		LineType:        INFO,
+	},
+	{
+		KeyBindingLine:  "enter",
+		TitleOrInfoLine: "簽出標籤（分離 HEAD）或從標籤建立分支",
+		LineType:        INFO,
+	},
+	{
+		KeyBindingLine:  "n",
+		TitleOrInfoLine: "從標籤建立新分支",
 		LineType:        INFO,
 	},
 	{
@@ -2138,6 +2143,29 @@ var zhHantFeatureInstructions = []FeatureInstructionMappingFormat{
 			"   - 擷取標籤並鏡像 (mirror) - 鏡像遠端的所有標籤",
 			"4. 按 `enter` 確認",
 			"5. 按 `esc` 關閉輸出",
+		},
+		LineType: INFO,
+	},
+	{
+		Feature: "簽出標籤 (checkout tag)",
+		InstructionLines: []string{
+			"1. 導覽至標籤元件（按 `1`）或切換至標籤元件（按 `< >`）",
+			"2. 使用 `↑/↓` 選取標籤",
+			"3. 按 `enter` 開啟標籤操作選單",
+			"4. 選取簽出標籤選項以切換至分離 HEAD 狀態",
+			"5. 選取切換方式（保留或不保留變更）",
+			"6. 按 `enter` 確認",
+		},
+		LineType: INFO,
+	},
+	{
+		Feature: "從標籤建立分支 (create branch from tag)",
+		InstructionLines: []string{
+			"1. 導覽至標籤元件（按 `1`）或切換至標籤元件（按 `< >`）",
+			"2. 使用 `↑/↓` 選取標籤",
+			"3. 按 `n`（或按 `enter` 並選取建立新分支選項）",
+			"4. 輸入新分支名稱",
+			"5. 按 `enter` 建立並切換至新分支",
 		},
 		LineType: INFO,
 	},

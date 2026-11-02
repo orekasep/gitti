@@ -522,12 +522,6 @@ func UpDownKeyPressMsgUpdateForPopUp(msg tea.KeyPressMsg, m *types.GittiModel) (
 			triggerViewportVerticalScrollFromKey(msg, &popUp.BranchMergeOutputViewport)
 			return m, nil
 		}
-	case constant.CheckoutTagOutputPopUp:
-		popUp, ok := m.PopUpModel.(*tagPopUp.CheckoutTagOutputPopUpModel)
-		if ok {
-			triggerViewportVerticalScrollFromKey(msg, &popUp.CheckoutTagOutputViewport)
-			return m, nil
-		}
 
 	case constant.InteractiveRebaseFixupSquashOutputPopUp:
 		popUp, ok := m.PopUpModel.(*interactiverebasePopUp.InteractiveRebaseFixupSquashOutputPopUpModel)
@@ -638,12 +632,6 @@ func UpDownMouseMsgUpdateForPopUp(msg tea.MouseMsg, m *types.GittiModel) (*types
 		popUp, ok := m.PopUpModel.(*branchPopUp.BranchMergeOutputPopUpModel)
 		if ok {
 			triggerViewportVerticalScrollFromMouse(msg, &popUp.BranchMergeOutputViewport)
-			return m, nil
-		}
-	case constant.CheckoutTagOutputPopUp:
-		popUp, ok := m.PopUpModel.(*tagPopUp.CheckoutTagOutputPopUpModel)
-		if ok {
-			triggerViewportVerticalScrollFromMouse(msg, &popUp.CheckoutTagOutputViewport)
 			return m, nil
 		}
 	case constant.BlamePopUp:

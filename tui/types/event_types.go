@@ -53,11 +53,6 @@ type GitDeleteTagResultEventDataStructure struct {
 	Success bool
 }
 
-type GitCheckoutTagResultEventDataStructure struct {
-	Result  []string
-	Success bool
-}
-
 type GitPushTagResultEventDataStructure struct {
 	Success bool
 }

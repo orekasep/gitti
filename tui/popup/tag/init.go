@@ -379,35 +379,3 @@ func InitChooseTagActionPopUpModel(m *types.GittiModel, tagName string) {
 		TagActionList: tL,
 	}
 }
-
-// ------------------------------------
-//
-//	Initialize the checkout tag output popup model
-//
-// ------------------------------------
-func InitCheckoutTagOutputPopUpModel(m *types.GittiModel, tagName string) {
-	vp := viewport.New()
-	vp.SoftWrap = true
-	vp.MouseWheelEnabled = true
-	vp.MouseWheelDelta = 1
-	vp.SetHeight(constant.PopUpCheckoutTagOutputViewportHeight)
-	vp.SetWidth(min(constant.MaxCheckoutTagOutputPopUpWidth, int(float64(m.Width)*0.8)) - 4)
-
-	s := spinner.New()
-	s.Spinner = spinner.Dot
-	s.Style = style.SpinnerStyle
-
-	popUpModel := &CheckoutTagOutputPopUpModel{
-		TagName:                   tagName,
-		CheckoutTagOutputViewport: vp,
-		Spinner:                   s,
-		CancelFunc:                nil,
-	}
-
-	popUpModel.IsProcessing.Store(false)
-	popUpModel.HasError.Store(false)
-	popUpModel.ProcessSuccess.Store(false)
-	popUpModel.IsCancelled.Store(false)
-
-	m.PopUpModel = popUpModel
-}

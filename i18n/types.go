@@ -206,7 +206,6 @@ type LanguageMapping struct {
 	KeyBindingForCreateTagPopUp                                []string
 	KeyBindingForCreateTagConfirmationPopUp                    []string
 	KeyBindingForChooseTagActionPopUp                          []string
-	KeyBindingForCheckoutTagOutputPopUp                        []string
 	KeyBindingForChooseDeleteTagOptionPopUp                    []string
 	KeyBindingForChooseRemoteForDeleteRemoteTagPopUp           []string
 	KeyBindingForDeleteTagOutputPopUp                          []string
@@ -461,8 +460,6 @@ type LanguageMapping struct {
 	ChooseTagActionCheckoutOptionInfo        string
 	ChooseTagActionCreateBranchOption        string
 	ChooseTagActionCreateBranchOptionInfo    string
-	CheckoutTagOutputPopUpTitle              string
-	CheckoutTagCheckingOut                   string
 	ChooseDeleteTagOptionTitle               string
 	DeleteTagPopUpDeleteLocalTagOption       string
 	DeleteTagPopUpDeleteLocalTagOptionInfo   string

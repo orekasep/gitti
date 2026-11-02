@@ -534,14 +534,9 @@ func handleNonTypingEnterKeyBindingInteraction(m *types.GittiModel) (*types.Gitt
 					case git.TAGACTIONCHECKOUT:
 						m.ShowPopUp.Store(true)
 						m.IsTyping.Store(false)
-						m.PopUpType = constant.CheckoutTagOutputPopUp
-						tagPopUp.InitCheckoutTagOutputPopUpModel(m, popUp.TagName)
-						services.GitCheckoutTagService(m, popUp.TagName)
-
-						checkoutPopUp, ok := m.PopUpModel.(*tagPopUp.CheckoutTagOutputPopUpModel)
-						if ok {
-							return m, checkoutPopUp.Spinner.Tick
-						}
+						m.PopUpType = constant.ChooseSwitchBranchTypePopUp
+						branchPopUp.InitChooseSwitchBranchTypePopUpModel(m, "refs/tags/"+popUp.TagName)
+						return m, nil
 					case git.TAGACTIONCREATEBRANCH:
 						m.ShowPopUp.Store(true)
 						m.IsTyping.Store(true)

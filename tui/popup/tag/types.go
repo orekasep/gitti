@@ -442,20 +442,3 @@ func (d TagActionOptionDelegate) Render(w io.Writer, m list.Model, index int, li
 
 	fmt.Fprint(w, fn(fullStr))
 }
-
-// ------------------------------------
-//
-//	CheckoutTagOutputPopUpModel holds the output viewport and spinner for tag checkout
-//
-// ------------------------------------
-type CheckoutTagOutputPopUpModel struct {
-	TagName                   string
-	CheckoutTagOutputViewport viewport.Model
-	Spinner                   spinner.Model
-	IsProcessing              atomic.Bool
-	HasError                  atomic.Bool
-	ProcessSuccess            atomic.Bool
-	IsCancelled               atomic.Bool
-	CancelFunc                context.CancelFunc
-}
-

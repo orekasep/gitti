@@ -266,7 +266,11 @@ func (gb *GitBranch) GitSwitchBranch(branchName string) ([]string, bool) {
 		return gitOpsOutput, false
 	}
 
-	gitArgs = []string{"checkout", branchName}
+	if strings.HasPrefix(branchName, "refs/tags/") {
+		gitArgs = []string{"checkout", "--detach", branchName}
+	} else {
+		gitArgs = []string{"checkout", branchName}
+	}
 	switchBranchCmdExecutor := executor.GittiCmdExecutor.RunGitCmd(gitArgs, false)
 	switchBranchOutput, switchBranchErr := switchBranchCmdExecutor.CombinedOutput()
 	gb.logging.RegisterNewLog(logging.SWITCH_BRANCH_OPS, strings.Join(gitArgs, " "), logging.INFO, "", true)
@@ -313,7 +317,12 @@ func (gb *GitBranch) GitSwitchBranchWithChanges(branchName string) ([]string, bo
 	defer gb.gitProcessLock.ReleaseGitOpsLock()
 	var gitOpsOutput []string
 
-	switchBranchGitArgs := []string{"checkout", branchName}
+	var switchBranchGitArgs []string
+	if strings.HasPrefix(branchName, "refs/tags/") {
+		switchBranchGitArgs = []string{"checkout", "--detach", branchName}
+	} else {
+		switchBranchGitArgs = []string{"checkout", branchName}
+	}
 	switchBranchCmdExecutor := executor.GittiCmdExecutor.RunGitCmd(switchBranchGitArgs, false)
 	switchBranchOutput, switchBranchErr := switchBranchCmdExecutor.CombinedOutput()
 	gb.logging.RegisterNewLog(logging.SWITCH_BRANCH_OPS, strings.Join(switchBranchGitArgs, " "), logging.INFO, "", true)
@@ -484,21 +493,18 @@ func (gb *GitBranch) GitMergeWithSigning(branchesName []string) []string {
 //	Create a new branch based on a tag and switch to it
 //
 // ------------------------------------
-func (gb *GitBranch) GitCreateNewBranchBasedOnTagAndSwitch(branchName string, tagName string) ([]string, bool) {
+func (gb *GitBranch) GitCreateNewBranchBasedOnTagAndSwitch(branchName string, tagName string) {
 	if !gb.gitProcessLock.CanProceedWithGitOps() {
-		return []string{gb.gitProcessLock.OtherProcessRunningWarning()}, false
+		return
 	}
 	defer gb.gitProcessLock.ReleaseGitOpsLock()
 
-	gitArgs := []string{"checkout", "-b", branchName, "tags/" + tagName}
+	gitArgs := []string{"checkout", "-b", branchName, "refs/tags/" + tagName}
 	cmdExecutor := executor.GittiCmdExecutor.RunGitCmd(gitArgs, false)
 	output, err := cmdExecutor.CombinedOutput()
-	outputLines := processGeneralGitOpsOutputIntoStringArray(output)
 	gb.logging.RegisterNewLog(logging.CREATE_NEW_BRANCH_AND_SWITCH_OPS, strings.Join(gitArgs, " "), logging.INFO, "", true)
 	if err != nil {
 		gb.logging.RegisterNewLog(logging.CREATE_NEW_BRANCH_AND_SWITCH_OPS, strings.Join(gitArgs, " "), logging.ERROR, fmt.Sprintf("[%s ERROR]: %s (%s)", logging.CREATE_NEW_BRANCH_AND_SWITCH_OPS, err.Error(), strings.TrimSpace(string(output))), true)
-		return outputLines, false
+		return
 	}
-	return outputLines, true
 }
-
